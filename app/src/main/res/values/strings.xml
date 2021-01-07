@@ -1,0 +1,47 @@
+<resources>
+
+    <string name="app_name">Track it!</string>
+
+
+    //nav strings
+
+    //for java files
+    <string name="NAV_OPEN">Open navigation drawer</string>
+    <string name="NAV_CLOSE">Close navigation drawer</string>
+
+
+    //for xml files
+    <string name="NAV_HOME">Home</string>
+    <string name="NAV_MY_JOURNEY">My Journey</string>
+    <string name="NAV_CONTACT_US">Contact us</string>
+    <string name="NAV_SIGN_OUT">Sign out</string>
+
+    //Map api key
+    <string name="GOOGLE_MAP_API_KEY">AIzaSyCtUVY_OcBJ2eSdCeJsJDg9pjhKEfcLqmI</string>
+
+    //map category name
+    <string name="NORMAL">Normal</string>
+    <string name="SATELLITE">Satellite</string>
+    <string name="TERRAIN">Terrain</string>
+    <string name="HYBRID">Hybrid</string>
+
+    //GPS permission message
+    <string name="GPS_PERMISSION_TITLE">GPS Permission</string>
+    <string name="GPS_PERMISSION_MESSAGE">GPS is required for this app to work, Please enable GPS</string>
+    <string name="GPS_PERMISSION_POSITIVE_BUTTON_STRING">Yes</string>
+
+
+    //Play service permission
+    <string name="PLAY_SERVICE_DIALOG">Dialog is cancelled by the user!</string>
+    <string name="PLAY_SERVICE_DIALOG_CANCELLED">Yes</string>
+
+
+    //get Quantity of the locations
+    <plurals name="num_location_reported">
+        <item quantity="zero">No Location Reported</item>
+        <item quantity="one">One Location Reported</item>
+        <item quantity="other">%d Location Reported</item>
+    </plurals>
+
+
+</resources>

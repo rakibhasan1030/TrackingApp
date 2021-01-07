@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "985103438485",
+    "project_id": "tracking-app-f031f",
+    "storage_bucket": "tracking-app-f031f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985103438485:android:36c93bed3f9fa9af4d019c",
+        "android_client_info": {
+          "package_name": "com.rakibhasan.trackingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985103438485-j6at1p6eaiver6op61b7s0atbpo6485b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8Q-vd6PVnoQpR1DsOa6vHpArqWn5SieM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985103438485-j6at1p6eaiver6op61b7s0atbpo6485b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Track users location</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <!-- map -->
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAq9vJnJ9AUTUvOQ1WnfFRV1BQxMgg35g&callback=initMap&libraries=&v=weekly"
+    defer></script>
+
+
+
+
+
+  <style>
+    div.ex3 {
+      /* background-color: rgb(68, 66, 66); */
+      width: 250px;
+      height: 400px;
+      overflow: scroll;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    div.ex33 {
+      /* background-color: rgb(68, 66, 66); */
+      width: 250px;
+      height: 200px;
+      overflow: scroll;
+      padding: 10px;
+      overflow-x: hidden;
+    }
+
+    #map {
+      height: 400px;
+      /* The height is 400 pixels */
+      width: 100%;
+      /* The width is the width of the web page */
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .open-button {
+      background-color: #555;
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      position: fixed;
+      bottom: 23px;
+      right: 28px;
+      width: 280px;
+    }
+
+    /* The popup chat - hidden by default */
+    .chat-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 15px;
+      border: 3px solid #f1f1f1;
+      z-index: 9;
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+      max-width: 300px;
+      padding: 10px;
+      background-color: white;
+    }
+
+
+
+
+
+    /* Set a style for the submit/send button */
+    /* .form-container .btn {
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+} */
+
+    /* Add a red background color to the cancel button */
+    .form-container .cancel {
+      background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover,
+    .open-button:hover {
+      opacity: 1;
+    }
+
+
+    .chat-container {
+      border: 2px solid #dedede;
+      background-color: #f1f1f1;
+      border-radius: 15px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      padding: 7px;
+    }
+
+    .chat-container-admin {
+      border: 2px solid #dedede;
+      border-radius: 15px;
+      margin-left: 20px;
+      border-color: #ccc;
+      background-color: #ddd;
+      margin-bottom: 10px;
+      padding: 7px;
+    }
+
+    .chat-container-header {
+      padding: 5px;
+      margin: 5px 0;
+    }
+
+    .cross-right {
+      float: right;
+    }
+
+    .img-size {
+      height: 30px;
+      width: 30px;
+    }
+
+    #msgFormUserName {
+      font-size: 20px;
+    }
+
+    .time-font {
+      font-size: 10px;
+    }
+  </style>
+
+  <script>
+    var map;
+    var marker;
+    var infowindow;
+
+    //center location in dhaka
+    userLocation = { lat: 23.8103, lng: 90.4125 };
+
+    function initMap() {
+      //map 
+      map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 12,
+        center: userLocation,
+      });
+
+      //marker
+      marker = new google.maps.Marker({
+        position: userLocation,
+        map: map,
+        animation: google.maps.Animation.DROP,
+      });
+
+      //infowindow
+      infowindow = new google.maps.InfoWindow({
+        content: "Dhaka"
+      });
+
+      marker.addListener('click', function () {
+        infowindow.open(map, marker);
+      });
+
+    }
+  </script>
+
+  <script>
+    // Initialize and add the map
+    function updateLocation(latitude, longitude, userName) {
+
+      removeAllMarker();
+
+      var lat1 = parseFloat(latitude);
+      var lon1 = parseFloat(longitude);
+
+      userLocation = { lat: lat1, lng: lon1, alt: 0 };
+
+      infowindow.setContent(userName);
+      map.setCenter(userLocation);
+      marker.setPosition(userLocation);
+      matker.animation(google.maps.Animation.DROP);
+
+    }
+
+  </script>
+
+  <script>
+    function removeAllMarker() {
+      allUserData.forEach((doc) => {
+        marker.setPosition(null);
+      });
+    }
+
+
+    // TODO
+    function allUserLocation() {
+      removeAllMarker();
+      allUserData.forEach((doc) => {
+        var lat1 = doc.data()["currentLocation"].latitude;
+        var lon1 = doc.data()["currentLocation"].longitude;
+        var name = doc.data()["userName"];
+
+        userLocation = { lat: lat1, lng: lon1, alt: 0 };
+
+        marker.setPosition(userLocation);
+
+      });
+    }
+  </script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+      <ul class="navbar-nav mr-auto">
+        <li class="brand-item">
+          <a class="navbar-brand" href="#">Inovex</a>
+        </li>
+      </ul>
+    </div>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
+        <!-- TODO -->
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#" onclick="allUserLocation()">All users Location</a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <br>
+
+  <div class="container">
+
+    <br>
+
+    <div class="row">
+      <div class="col-3">
+        <h3>&nbsp; Users</h3>
+        <div class="ex3">
+          <ul class="list-group" id="userList">
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-9">
+        <h3>Location</h3>
+        <div id="map" class="list-group">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <div class="chat-popup" id="myForm">
+    <div class="form-container">
+
+      <div class="chat-container-header">
+        <img class="img-size" src="https://wallpaperaccess.com/full/1209275.jpg" alt="Avatar">
+        <span id="msgFormUserName"></span>
+        <a href="#" class="cross-right" onclick="formClose()"><i class="fa fa-times-circle"></i></a>
+      </div>
+
+
+
+
+      <div class="ex33" id="msgFormAllMsg">
+
+      </div>
+
+
+
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Reply" id="msgFormReply">
+        <span class="btn btn-outline-secondary" type="button" onclick="sendMsg()" id="msgFormSender"><i
+            class="fa fa-paper-plane"></i></span>
+      </div>
+
+    </div>
+  </div <!-- firestore -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyAAq9vJnJ9AUTUvOQ1WnfFRV1BQxMgg35g",
+      authDomain: "tracking-app-f031f.firebaseapp.com",
+      projectId: "tracking-app-f031f",
+      storageBucket: "tracking-app-f031f.appspot.com",
+      messagingSenderId: "985103438485",
+      appId: "1:985103438485:web:9139cc2c94408dd34d019c",
+      measurementId: "G-5Z3GH5BWT5"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+
+    var db = firebase.firestore();
+
+    var allUserData = [];
+    var isLoadAll = false;
+
+    db.collection("usersLocation").orderBy("lastUpdatedTime", "desc")
+      .onSnapshot(function (snapshot) {
+        snapshot.docChanges().forEach(function (change) {
+          if (change.type === "added") {
+            allUserData.push(change.doc);
+          }
+          else if (change.type === "modified") {
+            for (var i = 0; i < allUserData.length; i++) {
+              if (allUserData[i].id == change.doc.id) {
+                allUserData[i] = change.doc;
+                break;
+              }
+            }
+          }
+          else if (change.type === "removed") {
+            for (var i = 0; i < allUserData.length; i++) {
+              if (allUserData[i].id == change.doc.id) {
+                allUserData.splice(i, 1);
+                break;
+              }
+            }
+          }
+        });
+
+        setData();
+      });
+
+
+
+    //all msg
+    var allMsg = [];
+    db.collection("messages").orderBy("time", "desc")
+      .onSnapshot(function (snapshot) {
+        snapshot.docChanges().forEach(function (change) {
+          if (change.type === "added") {
+            allMsg.push(change.doc);
+          }
+          else if (change.type === "modified") {
+            for (var i = 0; i < allMsg.length; i++) {
+              if (allMsg[i].id == change.doc.id) {
+                allMsg[i] = change.doc;
+                break;
+              }
+            }
+          }
+          else if (change.type === "removed") {
+            for (var i = 0; i < allMsg.length; i++) {
+              if (allMsg[i].id == change.doc.id) {
+                allMsg.splice(i, 1);
+                break;
+              }
+            }
+          }
+        });
+        showAllMsg(currentChatId);
+        setData();
+      });
+
+
+
+
+
+    function setData() {
+
+      var userList = document.getElementById("userList");
+
+      if (isLoadAll) {
+        userList.innerHTML = '';
+      }
+
+      allUserData.forEach((doc) => {
+        var userId = doc.id;
+        var lat = doc.data()["currentLocation"].latitude;
+        var lon = doc.data()["currentLocation"].longitude;
+        var name = doc.data()["userName"];
+
+        var countUnseen = 0;
+
+        allMsg.forEach((msgDoc) => {
+          if ((userId == msgDoc.data()["receiverId"] || userId == msgDoc.data()["senderId"]) && msgDoc.data()["isSeen"] == false) {
+            countUnseen++;
+          }
+        });
+
+        if (countUnseen > 0) {
+          userList.innerHTML += '<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#" onClick="updateLocation(\'' + lat + '\',\'' + lon + '\',\'' + name + '\')">' + name + '</a><span class="badge badge-primary badge-pill">' + countUnseen + '</span><a herf="#" onclick="toggleForm(\'' + doc.id + '\',\'' + name + '\')" ><i class="fa fa-comment"></i></a></li>'
+        } else {
+          userList.innerHTML += '<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#" onClick="updateLocation(\'' + lat + '\',\'' + lon + '\',\'' + name + '\')">' + name + '</a><a herf="#" onclick="toggleForm(\'' + doc.id + '\',\'' + name + '\')" ><i class="fa fa-comment"></i></a></li>'
+        }
+
+      });
+
+
+
+      isLoadAll = true;
+
+
+    }
+
+
+  </script>
+
+
+  <script>
+    document.getElementById("msgFormReply").addEventListener("keydown", function (e) {
+      if (e.keyCode === 13) {
+        sendMsg();
+      }
+    });
+
+    function formClose() {
+      document.getElementById("myForm").style.display = "none";
+      currentChatId = null;
+    }
+    var currentChatId;
+
+    function toggleForm(id, name) {
+
+      if (document.getElementById("myForm").style.display == "block") {
+        if (currentChatId == id) {
+          document.getElementById("myForm").style.display = "none";
+        }
+        else {
+          showAllMsg(id);
+          document.getElementById("msgFormUserName").innerHTML = name;
+        }
+
+
+      } else {
+        document.getElementById("myForm").style.display = "block";
+        document.getElementById("msgFormUserName").innerHTML = name;
+        showAllMsg(id);
+      }
+    }
+
+    function showAllMsg(id) {
+      currentChatId = id;
+
+      updateSeen();
+
+
+      var allMsgField = document.getElementById("msgFormAllMsg");
+
+      allMsgField.innerHTML = "";
+
+
+      allMsg.forEach((doc) => {
+        if (currentChatId == doc.data()["receiverId"] || currentChatId == doc.data()["senderId"]) {
+          var msg = doc.data()["msg"];
+          var crateTime = doc.data()["time"].toDate();
+
+          var time = crateTime.toDateString() + " "+crateTime.toLocaleTimeString('en-US');
+
+          //admin
+          if (currentChatId == doc.data()["senderId"]) {
+            allMsgField.innerHTML += '<div class="chat-container"><p>' + msg + '</p><span class="time-right time-font">' + time + '</span></div>';
+          }
+          //user
+          else {
+            allMsgField.innerHTML += '<div class="chat-container-admin"><p>' + msg + '</p><span class="time-right time-font">' + time + '</span></div>';
+          }
+
+        }
+
+      });
+
+      allMsgField.scrollTop = allMsgField.scrollHeight;
+    }
+
+
+    function updateSeen(id) {
+      allMsg.forEach((doc) => {
+        if ((currentChatId == doc.data()["receiverId"] || currentChatId == doc.data()["senderId"]) && !doc.data()["isSeen"]) {
+          // To update age and favorite color:
+          db.collection("messages").doc(doc.id).update({
+            "isSeen": true,
+          })
+            .then(function () {
+              console.log("Msg seen " + doc.id);
+            });
+        }
+
+      });
+    }
+
+
+
+    function sendMsg() {
+      var msg = document.getElementById("msgFormReply").value;
+      document.getElementById("msgFormReply").value = "";
+
+      if (msg.trim().length > 0) {
+        // Add a new document with a generated id.
+        db.collection("messages").add({
+          isSeen: false,
+          msg: msg,
+          receiverId: currentChatId,
+          senderId: "admin",
+          time: firebase.firestore.FieldValue.serverTimestamp(),
+        })
+          .then(function (docRef) {
+            console.log("Msg send successfully: ", docRef.id);
+            updateSeen();
+          })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+          });
+      } else {
+        alert("Enter a msg");
+      }
+
+    }
+  </script>
+
+
+
+
+
+</body>
+
+</html>

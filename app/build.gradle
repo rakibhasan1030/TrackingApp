@@ -1,0 +1,89 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.rakibhasan.trackingapp"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        android.compileOptions.sourceCompatibility 1.8
+        android.compileOptions.targetCompatibility 1.8
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+
+        Properties properties = new Properties()
+        if (rootProject.file("local.properties").exists()) {
+            properties.load(rootProject.file("local.properties").newDataInputStream())
+        }
+        // Inject the Maps API key into the manifest
+        manifestPlaceholders = [ mapsApiKey : properties.getProperty("MAPS_API_KEY", "AIzaSyCtUVY_OcBJ2eSdCeJsJDg9pjhKEfcLqmI") ]
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-firestore:22.0.1'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+
+    //firebase auth
+    def firebase_auth_latest_version = "20.0.1";
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_latest_version"
+    implementation "com.google.android.gms:play-services-auth:19.0.0"
+
+
+    //CircleImageView
+    def circle_image_view_latest_version = "3.1.0";
+    implementation "de.hdodenhof:circleimageview:$circle_image_view_latest_version"
+
+
+    //Glide
+    def glide_latest_version = "4.11.0";
+    implementation "com.github.bumptech.glide:glide:$glide_latest_version"
+
+    //Google Location and Activity Recognition
+    def google_location_latest_version = "17.1.0";
+    implementation "com.google.android.gms:play-services-location:$google_location_latest_version"
+
+
+    //Google Maps
+    def google_maps_latest_version = "17.0.0";
+    implementation "com.google.android.gms:play-services-maps:$google_maps_latest_version"
+
+
+/*    //Google-Directions-Android
+    def google_direction_latest_version = "1.1.0";
+    implementation "com.github.jd-alexander:library: $google_direction_latest_version"*/
+
+    implementation 'com.shobhitpuri.custombuttons:google-signin:1.1.0'
+
+
+}
